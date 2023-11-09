@@ -33,7 +33,12 @@ class ProductResource extends Resource
 
     protected static ?string $navigationGroup = 'Shop';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-check-badge';
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
 
     public static function form(Form $form): Form
     {
