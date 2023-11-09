@@ -8,13 +8,12 @@ use App\Models\Category;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
-use Filament\Forms\Components\Card;
-use Filament\Forms\Components\TextInput;
-use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\CategoryResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\CategoryResource\RelationManagers;
+use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\FileUpload;
+use App\Filament\Resources\CategoryResource\Pages;
 
 class CategoryResource extends Resource
 {
@@ -33,12 +32,17 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                Card::make()
+                Section::make('General')
+                    ->description('this is description')
                     ->schema([
                         TextInput::make('name')
                         ->required(),
+                        FileUpload::make('images')
+                        ->required()
+                        ->imageEditor()
+                        ->imageEditorAspectRatios([null, '16:9', '1:1']),    
                     ])
-                    ->columns(1),
+                    ->aside(),
             ]);
     }
 
@@ -46,12 +50,15 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
+                ImageColumn::make('images')
+                ->square(),
                 TextColumn::make('name')->sortable()->searchable()
             ])
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])

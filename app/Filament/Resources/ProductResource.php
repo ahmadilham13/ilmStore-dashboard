@@ -11,7 +11,6 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use Filament\Resources\Resource;
-use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
@@ -21,11 +20,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
-use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Columns\BooleanColumn;
 use App\Filament\Resources\ProductResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\ProductResource\RelationManagers;
 
 class ProductResource extends Resource
 {
@@ -101,8 +97,7 @@ class ProductResource extends Resource
         return $table
             ->columns([
                 ImageColumn::make('images')
-                ->square()
-                ->defaultImageUrl(url('https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg')),
+                ->square(),
                 TextColumn::make('name'),
                 TextColumn::make('price')->money('idr'),
                 BooleanColumn::make('available'),
