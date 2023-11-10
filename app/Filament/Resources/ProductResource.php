@@ -100,6 +100,7 @@ class ProductResource extends Resource
                 ->square(),
                 TextColumn::make('name'),
                 TextColumn::make('price')->money('idr'),
+                TextColumn::make('category.name'),
                 BooleanColumn::make('available'),
             ])
             ->filters([
