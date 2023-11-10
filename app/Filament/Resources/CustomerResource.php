@@ -58,8 +58,13 @@ class CustomerResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('first_name')->sortable()->searchable(),
-                TextColumn::make('last_name')->sortable()->searchable(),
+                TextColumn::make('first_name')
+                ->label('Full Name')
+                ->sortable(['first_name', 'last_name'])
+                ->searchable(['first_name', 'last_name'])
+                ->formatStateUsing(function ($state, Customer $order) {
+                    return $order->first_name . ' ' . $order->last_name;
+                }),
                 TextColumn::make('email')->sortable()->searchable(),
             ])
             ->filters([
