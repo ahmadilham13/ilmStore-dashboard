@@ -9,13 +9,15 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Grid;
 use Illuminate\Support\Facades\Hash;
+use Filament\Forms\Components\Section;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\CustomerResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\CustomerResource\RelationManagers;
-use Filament\Tables\Columns\TextColumn;
 
 class CustomerResource extends Resource
 {
@@ -29,28 +31,29 @@ class CustomerResource extends Resource
     {
         return $form
             ->schema([
-                Card::make()
+                Section::make('General')
+                    ->description('This is description')
                     ->schema([
-                        TextInput::make('first_name')
-                        ->required(),
-                        TextInput::make('last_name'),
+                        Grid::make()
+                            ->schema([
+                                TextInput::make('first_name')
+                                ->required(),
+                                TextInput::make('last_name'),
+                            ]),
+                            TextInput::make('email')
+                            ->unique(ignorable:fn ($record) => $record),
                     ])
-                    ->columns(2),
-                Card::make()
-                    ->schema([
-                        TextInput::make('email')
-                        ->unique(ignorable: fn ($record) => $record),
-                    ])
-                    ->columns(1),
-                Card::make()
+                    ->aside(),
+                Section::make('Privacy')
+                    ->description('This is description')
                     ->schema([
                         TextInput::make('password')
-                        ->password()
-                        ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
-                        ->dehydrated(fn (?string $state): bool => filled($state))
-                        ->required(fn (string $operation): bool => $operation === 'create'),
+                            ->password()
+                            ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
+                            ->dehydrated(fn (?string $state): bool => filled($state))
+                            ->required(fn (string $operation): bool => $operation === 'create'),
                     ])
-                    ->columns(2),
+                    ->aside(),
             ]);
     }
 
