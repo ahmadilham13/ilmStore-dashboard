@@ -2,29 +2,29 @@
 
 namespace App\Filament\Resources\MyResource\Widgets;
 
-use App\Models\Customer;
+use App\Models\User;
 use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
 use Filament\Widgets\ChartWidget;
 
-class CustomersChart extends ChartWidget
+class UsersChart extends ChartWidget
 {
-    protected static ?string $heading = 'Customers';
+    protected static ?string $heading = 'Users';
 
     protected function getData(): array
     {
-        $data = Trend::model(Customer::class)
-            ->between(
-                start: now()->startOfYear(),
-                end: now()->endOfYear(),
-            )
-            ->perMonth()
-            ->count();
+        $data = Trend::model(User::class)
+        ->between(
+            start: now()->startOfYear(),
+            end: now()->endOfYear(),
+        )
+        ->perMonth()
+        ->count();
 
         return [
             'datasets' => [
                 [
-                    'label'     => 'Products',
+                    'label'     => 'Users',
                     'data'      => $data->map(fn (TrendValue $value) => $value->aggregate),
                 ],
             ],

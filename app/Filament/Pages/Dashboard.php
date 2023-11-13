@@ -5,7 +5,7 @@ namespace App\Filament\Pages;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
 use App\Filament\Resources\MyResource\Widgets\ProductsChart;
-use App\Filament\Resources\MyResource\Widgets\CustomersChart;
+use App\Filament\Resources\MyResource\Widgets\UsersChart;
 use App\Filament\Resources\MyResource\Widgets\StatsOverview;
 
 class Dashboard extends \Filament\Pages\Dashboard
@@ -18,7 +18,7 @@ class Dashboard extends \Filament\Pages\Dashboard
             FilamentInfoWidget::class,
             StatsOverview::class,
             ProductsChart::class,
-            CustomersChart::class,
+            UsersChart::class,
         ];
     }
     
