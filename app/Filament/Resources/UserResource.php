@@ -68,7 +68,7 @@ class UserResource extends Resource
                 ->formatStateUsing(function ($state, User $user) {
                     return ucwords($user->roles);
                 }),
-                TextColumn::make('email')->searchable(),
+                TextColumn::make('email')->searchable()->sortable(),
             ])
             ->filters([
                 //
