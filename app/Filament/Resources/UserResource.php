@@ -8,6 +8,7 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Hash;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\TextColumn;
@@ -32,12 +33,27 @@ class UserResource extends Resource
                 Section::make('General')
                     ->description('This is description')
                     ->schema([
-                        TextInput::make('name'),
-                        TextInput::make('roles')
-                        ->formatStateUsing(function ($state, User $user) {
-                            return ucwords($user->roles);
-                        }),
-                        TextInput::make('email'),
+                        TextInput::make('name')
+                        ->required(),
+                        Select::make('roles')
+                        ->required()
+                        ->options([
+                            'admin' => 'Admin',
+                            'customer'  => 'Customer'
+                        ]),
+                        TextInput::make('email')
+                        ->required(),
+                    ])
+                    ->aside(),
+                Section::make('Privacy')
+                    ->description('This is Description')
+                    ->schema([
+                        TextInput::make('password')
+                        ->password()
+                        ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
+                        ->dehydrated(fn (?string $state): bool => filled($state))
+                        ->required(fn (string $operation): bool => $operation === 'create')
+                        ->hidden(fn (string $operation): bool => $operation === 'view'),
                     ])
                     ->aside(),
             ]);
@@ -61,6 +77,9 @@ class UserResource extends Resource
                 Tables\Actions\ViewAction::make()
                 ->iconButton()
                 ->icon('heroicon-m-eye'),
+                Tables\Actions\EditAction::make()
+                ->iconButton()
+                ->icon('heroicon-m-pencil-square'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
