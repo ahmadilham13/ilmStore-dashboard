@@ -33,11 +33,10 @@ class UserResource extends Resource
                     ->description('This is description')
                     ->schema([
                         TextInput::make('name'),
-                        Select::make('roles')
-                        ->options([
-                            'admin' => 'Admin',
-                            'customer'  => 'Customer'
-                        ]),
+                        TextInput::make('roles')
+                        ->formatStateUsing(function ($state, User $user) {
+                            return ucwords($user->roles);
+                        }),
                         TextInput::make('email'),
                     ])
                     ->aside(),
@@ -49,7 +48,10 @@ class UserResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')->searchable()->sortable(),
-                TextColumn::make('roles'),
+                TextColumn::make('roles')
+                ->formatStateUsing(function ($state, User $user) {
+                    return ucwords($user->roles);
+                }),
                 TextColumn::make('email')->searchable(),
             ])
             ->filters([
